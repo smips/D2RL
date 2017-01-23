@@ -1,0 +1,1403 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SadConsole.Controls.Windows</name>
+    </assembly>
+    <members>
+        <member name="T:SadConsole.Consoles.ControlsConsole">
+            <summary>
+            A basic console that can contain controls.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Consoles.ControlsConsole.updateKeyboardState">
+            <summary>
+            When set to false, when the ControlsConsole has <see cref="M:SadConsole.Consoles.ControlsConsole.ProcessKeyboard(SadConsole.Input.KeyboardInfo)"/> called, <see cref="F:SadConsole.Consoles.ControlsConsole.KeyboardState"/> will not be updated.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.Theme">
+            <summary>
+            Gets or sets the theme of the window.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.ProcessMouseWithoutFocus">
+            <summary>
+            When true, mouse events over this console will be processed even if this console is not active.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.Controls">
+            <summary>
+            Gets a read-only collection of the controls this console contains.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.CapturedControl">
+            <summary>
+            Gets the control currently capturing mouse events.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.FocusedControl">
+            <summary>
+            Gets or sets the control that has keyboard focus.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.CanTabToNextConsole">
+            <summary>
+            When true, allows the tab command to move to the next console (when there is a parent) instead of cycling back to the first control on this console.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.NextTabConsole">
+            <summary>
+            Sets reference to the console to tab to when the <see cref="P:SadConsole.Consoles.ControlsConsole.CanTabToNextConsole"/> property is true. Set this to null to allow the engine to determine the next console.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.PreviousTabConsole">
+            <summary>
+            Sets reference to the console to tab to when the <see cref="P:SadConsole.Consoles.ControlsConsole.CanTabToNextConsole"/> property is true. Set this to null to allow the engine to determine the next console.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsole.DisableControlFocusing">
+            <summary>
+            When set to true, child controls are not alerted to (non-)focused states.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.#ctor(System.Int32,System.Int32)">
+            <summary>
+             Creates a new instance of the controls console with the specified width and height.
+            </summary>
+            <param name="width">The width of the console.</param>
+            <param name="height">The height of the console.</param>
+            <param name="device">The graphics device to render this console on.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.Add(SadConsole.Controls.ControlBase)">
+            <summary>
+            Adds an existing control to this console.
+            </summary>
+            <param name="control">The control to add.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.Remove(SadConsole.Controls.ControlBase)">
+            <summary>
+            Removes a control from this console.
+            </summary>
+            <param name="control">The control to remove.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.TabNextControl">
+            <summary>
+            Gives the focus to the next control in the tab order.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.TabPreviousControl">
+            <summary>
+            Gives focus to the previous control in the tab order.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.RemoveAll">
+            <summary>
+            Removes all controls from this console.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.Contains(SadConsole.Controls.ControlBase)">
+            <summary>
+            Checks if the specified control exists in this console.
+            </summary>
+            <param name="control">The control to check.</param>
+            <returns>True when the control exists in this console; otherwise false.</returns>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.FocusedControlChanging(SadConsole.Controls.ControlBase,SadConsole.Controls.ControlBase)">
+            <summary>
+            When overridden, allows you to prevent a control from taking focus from another control.
+            </summary>
+            <param name="newControl">The control requesting focus.</param>
+            <param name="oldControl">The control that has focus.</param>
+            <returns>True when the focus change is allowed; otherwise false.</returns>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.FocusedControlChanged(SadConsole.Controls.ControlBase,SadConsole.Controls.ControlBase)">
+            <summary>
+            This method is called when a control gains focus. Unless overridden, this method calls the DetermineAppearance method both the <paramref name="newControl"/> and <paramref name="oldControl"/> parameters.
+            </summary>
+            <param name="newControl">The control that has focus.</param>
+            <param name="oldControl">The control that previously had focus.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.ReOrderControls">
+            <summary>
+            Reorders the control collection based on the tab index of each control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Processes the keyboard for the console.
+            </summary>
+            <param name="info">Keyboard information sent by the engine.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.ProcessMouse(SadConsole.Input.MouseInfo)">
+            <summary>
+            Processes the mouse for the console.
+            </summary>
+            <param name="info">Mouse information sent by the engine.</param>
+            <returns>True when the mouse is over this console and it is the active console; otherwise false.</returns>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.CaptureControl(SadConsole.Controls.ControlBase)">
+            <summary>
+            Captures a control for exclusive mouse focus. Sets the ExclusiveMouse property to true.
+            </summary>
+            <param name="control">The control to capture</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.ReleaseControl">
+            <summary>
+            Releases the control from exclusive mouse focus. Sets the ExclusiveMouse property to false and sets the CapturedControl property to null.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.GetEnumerator">
+            <summary>
+            Gets an enumerator of the controls collection.
+            </summary>
+            <returns>The enumerator of the controls collection.</returns>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets an enumerator of the controls collection.
+            </summary>
+            <returns>The enumerator of the controls collection.</returns>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsole.Update">
+            <summary>
+            Calls the Update method of the base class and then Update on each control.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Consoles.ControlsConsoleRenderer">
+            <summary>
+            Draws a text surface to the screen.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsoleRenderer.Batch">
+            <summary>
+            The sprite batch used for drawing to the screen.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsoleRenderer.BeforeRenderCallback">
+            <summary>
+            A method called when the <see cref="T:Microsoft.Xna.Framework.Graphics.SpriteBatch"/> has been created and transformed, but before any text characters are drawn.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsoleRenderer.AfterRenderCallback">
+            <summary>
+            A method called when all text characters have been drawn and any tinting has been applied.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.ControlsConsoleRenderer.Controls">
+            <summary>
+            Controls to render.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsoleRenderer.#ctor">
+            <summary>
+            Creates a new renderer.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsoleRenderer.Render(SadConsole.Consoles.ITextSurfaceRendered,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Renders a surface to the screen.
+            </summary>
+            <param name="surface">The surface to render.</param>
+            <param name="renderingMatrix">Display matrix for the rendered console.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsoleRenderer.Render(SadConsole.Consoles.ITextSurfaceRendered,Microsoft.Xna.Framework.Point,System.Boolean)">
+            <summary>
+            Renders a surface to the screen.
+            </summary>
+            <param name="surface">The surface to render.</param>
+            <param name="position">Calculates the rendering position on the screen based on the size of the <paramref name="surface"/> parameter.</param>
+            <param name="usePixelPositioning">Ignores the <paramref name="surface"/> font for positioning and instead treats the <paramref name="position"/> parameter in pixels.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.ControlsConsoleRenderer.GetPositionTransform(Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Point,System.Boolean)">
+            <summary>
+            Gets the Matrix transform that positions the console on the screen.
+            </summary>
+            <returns>The transform.</returns>
+        </member>
+        <member name="E:SadConsole.Consoles.Window.Closed">
+            <summary>
+            Raised when the window is closed.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.IsModal">
+            <summary>
+            Gets the whether or not the console is being shown as modal. 
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.Border">
+            <summary>
+            The <see cref="T:SadConsole.Shapes.Box"/> object used to draw the window border.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.IsDirty">
+            <summary>
+            When true, indiciates that the window should be redrawn.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.Dragable">
+            <summary>
+            Gets or sets whether or not this window can be moved with the mouse.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.CloseOnESC">
+            <summary>
+            Gets or sets whether or not this window can be closed when the escape key is pressed.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.DialogResult">
+            <summary>
+            Gets or set the dialog result status of the window.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.ModalIsDefault">
+            <summary>
+            Indicates that when this window is shown by the <see cref="M:SadConsole.Consoles.Window.Show"/> method or by setting the <see cref="!:_isVisible"/> property to true, the window will be shown as modal.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.TitleAlignment">
+            <summary>
+            Gets or sets the alignment of the window title.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.Title">
+            <summary>
+            Gets or sets the title displayed on the window.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.Window.Theme">
+            <summary>
+            Gets or sets the theme of the window.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.ProcessMouse(SadConsole.Input.MouseInfo)">
+            <summary>
+            Processes the mouse. If allowed, will move the console around with the mouse.
+            </summary>
+            <param name="info">The mouse state.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Processes the keyboard looking for the ESC key press to close the console, if required. Otherwise the base ControlsConsole will process the keyboard.
+            </summary>
+            <param name="info">Keyboard state.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Show">
+            <summary>
+            Displays this window using the modal value of the <see cref="P:SadConsole.Consoles.Window.ModalIsDefault"/> property.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Show(System.Boolean)">
+            <summary>
+            Displays this window.
+            </summary>
+            <param name="modal">When true, the window will be displayed as modal; otherwise false.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Hide">
+            <summary>
+            Hides the window.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Center">
+            <summary>
+            Centers the window according to the <see cref="!:SadConsole.Engine.Device.Viewport"/> size.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Redraw">
+            <summary>
+            Redraws the border and title of the window.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Prompt(System.String,System.String,System.String,System.Action{System.Boolean})">
+            <summary>
+            Shows a window prompt with two buttons for the user to click.
+            </summary>
+            <param name="message">The text to display.</param>
+            <param name="yesPrompt">The yes button's text.</param>
+            <param name="noPrompt">The no button's text.</param>
+            <param name="resultCallback">Callback with the yes (true) or no (false) result.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Prompt(SadConsole.ColoredString,System.String,System.String,System.Action{System.Boolean})">
+            <summary>
+            Shows a window prompt with two buttons for the user to click.
+            </summary>
+            <param name="message">The text to display. (background color is ignored)</param>
+            <param name="yesPrompt">The yes button's text.</param>
+            <param name="noPrompt">The no button's text.</param>
+            <param name="resultCallback">Callback with the yes (true) or no (false) result.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Message(System.String,System.String,System.Action)">
+            <summary>
+            Displays a dialog to the user with a specific message.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="closeButtonText">The text of the dialog's close button.</param>
+            <param name="closedCallback">A callback indicating the message was dismissed.</param>
+        </member>
+        <member name="M:SadConsole.Consoles.Window.Message(SadConsole.ColoredString,System.String,System.Action)">
+            <summary>
+            Displays a dialog to the user with a specific message.
+            </summary>
+            <param name="message">The message. (background color is ignored)</param>
+            <param name="closeButtonText">The text of the dialog's close button.</param>
+            <param name="closedCallback">A callback indicating the message was dismissed.</param>
+        </member>
+        <member name="T:SadConsole.Consoles.WindowRenderer">
+            <summary>
+            Renders a popup window taking into account the modal setting.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.WindowRenderer.#ctor">
+            <summary>
+            Creates a new renderer.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.WindowRenderer.IsModal">
+            <summary>
+            Indicates the window will be drawn modal (discolored background rect for the game window)
+            </summary>
+        </member>
+        <member name="P:SadConsole.Consoles.WindowRenderer.ModalTint">
+            <summary>
+            The color of the modal background.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Consoles.WindowRenderer.Render(SadConsole.Consoles.ITextSurfaceRendered,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Renders a 
+            </summary>
+            <param name="surface"></param>
+            <param name="renderingMatrix"></param>
+        </member>
+        <member name="T:SadConsole.Controls.ButtonBase`1">
+            <summary>
+            Base class for creating a button type control.
+            </summary>
+            <typeparam name="TTheme"></typeparam>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.theme">
+            <summary>
+            The theme override for the button.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.defaultTheme">
+            <summary>
+            The default theme if a theme is not set for the button.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.ButtonBase`1.Click">
+            <summary>
+            Raised when the button is clicked.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.isMouseDown">
+            <summary>
+            True when the mouse is down.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.text">
+            <summary>
+            The display text of the button.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.textAlignment">
+            <summary>
+            The alignment of the <see cref="F:SadConsole.Controls.ButtonBase`1.text"/>.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.ButtonBase`1.currentAppearance">
+            <summary>
+            Selected part of the theme based on the state of the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ButtonBase`1.Text">
+            <summary>
+            The text displayed on the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ButtonBase`1.TextAlignment">
+            <summary>
+            The alignment of the text, left, center, or right.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ButtonBase`1.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.#ctor(System.Int32,System.Int32,`0)">
+            <summary>
+            Creates a new button control.
+            </summary>
+            <param name="width">Width of the button.</param>
+            <param name="height">Height of the button.</param>
+            <param name="defaultTheme">The default theme, cannot be null.</param>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.DoClick">
+            <summary>
+            Raises the <see cref="E:SadConsole.Controls.ButtonBase`1.Click"/> event.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.DetermineAppearance">
+            <summary>
+            Sets the appearance of the control depending on the current state of the control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Detects if the SPACE and ENTER keys are pressed and calls the <see cref="E:SadConsole.Controls.ButtonBase`1.Click"/> method.
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.OnMouseIn(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the mouse is in the control area.
+            </summary>
+            <param name="info">The mouse state.</param>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.OnMouseExit(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the mouse leaves the control area.
+            </summary>
+            <param name="info">The mouse state.</param>
+        </member>
+        <member name="M:SadConsole.Controls.ButtonBase`1.OnLeftMouseClicked(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the left-mouse button is clicked.
+            </summary>
+            <param name="info">The mouse state.</param>
+        </member>
+        <member name="T:SadConsole.Controls.Button">
+            <summary>
+            Simple button control with a height of 1.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.Button.ShowEnds">
+            <summary>
+            When true, renders the <see cref="P:SadConsole.Controls.Button.EndCharacterLeft"/> and <see cref="P:SadConsole.Controls.Button.EndCharacterRight"/> on the button.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.Button.EndCharacterLeft">
+            <summary>
+            The character on the left side of the button. Defaults to '&lt;'.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.Button.EndCharacterRight">
+            <summary>
+            The character on the right side of the button. Defaults to '>'.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.Button.#ctor(System.Int32)">
+            <summary>
+            Creates an instance of the button control with the specified width.
+            </summary>
+            <param name="width">Width of the control.</param>
+        </member>
+        <member name="M:SadConsole.Controls.Button.Compose">
+            <summary>
+            Draws the control.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Controls.CheckBox">
+            <summary>
+            Represents a button that can be toggled on/off within a group of other buttons.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.CheckBox.IsSelectedChanged">
+            <summary>
+            Raised when the selected state of the radio button is changed.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.CheckBox.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.CheckBox.Text">
+            <summary>
+            The text displayed on the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.CheckBox.TextAlignment">
+            <summary>
+            The alignment of the text, left, center, or right.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.CheckBox.IsSelected">
+            <summary>
+            Gets or sets the selected state of the radio button.
+            </summary>
+            <remarks>Radio buttons within the same group will set their IsSelected property to the opposite of this radio button when you set this property.</remarks>
+        </member>
+        <member name="M:SadConsole.Controls.CheckBox.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new radio button control with the specified width and height.
+            </summary>
+            <param name="width">Width of the control.</param>
+            <param name="height">Height of the control.</param>
+        </member>
+        <member name="M:SadConsole.Controls.CheckBox.DetermineAppearance">
+            <summary>
+            Determines the appearance of the control based on its current state.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.CheckBox.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Called when the control should process keyboard information.
+            </summary>
+            <param name="info">The keyboard information.</param>
+            <returns>True if the keyboard was handled by this control.</returns>
+        </member>
+        <member name="T:SadConsole.Controls.ControlBase">
+            <summary>
+            Base class for all controls.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Position">
+            <summary>
+            Indicates he rendering location of this control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.IsVisible">
+            <summary>
+            Indicates weather or not this control is visible.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.TabStop">
+            <summary>
+            Indicates weather or not this control can be tabbed to.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.TabIndex">
+            <summary>
+            Sets the tab index of this control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.IsDirty">
+            <summary>
+            Indicates weather or not this control is dirty and should be redrawn.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Name">
+            <summary>
+            Represents a name to identify a control by.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.FocusOnClick">
+            <summary>
+            Gets or sets weather or not this control will become focused when the mosue is clicked.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.IsFocused">
+            <summary>
+            Gets or sets weather or not this control is focused.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.IsEnabled">
+            <summary>
+            Gets or sets weather or not this control is enabled.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Width">
+            <summary>
+            The width of the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Height">
+            <summary>
+            The height of the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Bounds">
+            <summary>
+            The area this control covers.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ControlBase.Parent">
+            <summary>
+            Gets or sets the parent console of this control.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.ControlBase.MouseEnter">
+            <summary>
+            Raised when the mouse enters this control.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.ControlBase.MouseExit">
+            <summary>
+            Raised when the mouse exits this control.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.ControlBase.MouseMove">
+            <summary>
+            Raised when the mouse is moved over this control.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.ControlBase.MouseButtonClicked">
+            <summary>
+            Raised when a mouse button is clicked while the mouse is over this control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Default constructor of the control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.FocusLost">
+            <summary>
+            Called when the control loses focus. Calls DetermineAppearance.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.Focused">
+            <summary>
+            Called when the control is focused. Calls DetermineAppearance.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Called when the keyboard is used on this control.
+            </summary>
+            <param name="info">The state of the keyboard.</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.ProcessMouse(SadConsole.Input.MouseInfo)">
+            <summary>
+            Checks if the mouse is the control and calls the appropriate mouse methods.
+            </summary>
+            <param name="info">Mouse information.</param>
+            <returns>Always returns false.</returns>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnParentChanged">
+            <summary>
+            Called when the parent property is changed.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnPositionChanged">
+            <summary>
+            Called when the control changes position.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.DetermineAppearance">
+            <summary>
+            Sets the appropriate theme for the control based on the current state of the control.
+            </summary>
+            <remarks>Called by the control as the mouse state changes, like when the mouse is clicked on top of the control or leaves the area of the control. This method is implemented by each derived control.</remarks>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnMouseEnter(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the mouse first enters the control. Raises the MouseEnter event and calls the <see cref="M:SadConsole.Controls.ControlBase.DetermineAppearance"/> method.
+            </summary>
+            <param name="info">The current mouse data</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnMouseExit(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the mouse exits the area of the control. Raises the MouseExit event and calls the <see cref="M:SadConsole.Controls.ControlBase.DetermineAppearance"/> method.
+            </summary>
+            <param name="info">The current mouse data</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnMouseIn(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called as the mouse moves around the control area. Raises the MouseMove event and calls the <see cref="M:SadConsole.Controls.ControlBase.DetermineAppearance"/> method.
+            </summary>
+            <param name="info">The current mouse data</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnLeftMouseClicked(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the left mouse button is clicked. Raises the MouseButtonClicked event and calls the <see cref="M:SadConsole.Controls.ControlBase.DetermineAppearance"/> method.
+            </summary>
+            <param name="info">The current mouse data</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.OnRightMouseClicked(SadConsole.Input.MouseInfo)">
+            <summary>
+            Called when the right mouse button is clicked. Raises the MouseButtonClicked event and calls the <see cref="M:SadConsole.Controls.ControlBase.DetermineAppearance"/> method.
+            </summary>
+            <param name="info">The current mouse data</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.TransformConsolePositionByControlPosition(SadConsole.Input.MouseInfo)">
+            <summary>
+            Helper method that returns the mouse x,y position for the control.
+            </summary>
+            <param name="info">The mouse information as used by a mouse event.</param>
+            <returns>The x,y position of the mouse over the control.</returns>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.Compose">
+            <summary>
+            Redraw the lastest appearance of the control.
+            </summary>
+            <remarks>This method is implemented by each derived control.</remarks>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.Compose(System.Boolean)">
+            <summary>
+            Redraw the latest appearance of the control if <see cref="P:SadConsole.Controls.ControlBase.IsDirty"/> is set to true.
+            </summary>
+            <param name="force">Force the draw to happen by setting IsDirty as true.</param>
+        </member>
+        <member name="M:SadConsole.Controls.ControlBase.Update">
+            <summary>
+            Update the control. Calls Compose() and then updates each cell effect if needed.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Controls.DrawingSurface">
+            <summary>
+            A simple surface for drawing text that can be moved and sized like a control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.DrawingSurface.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new drawing surface control with the specified width and height.
+            </summary>
+            <param name="width">Width of the control.</param>
+            <param name="height">Height of the control.</param>
+        </member>
+        <member name="M:SadConsole.Controls.DrawingSurface.DetermineAppearance">
+            <summary>
+            Not used by this control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.DrawingSurface.Compose">
+            <summary>
+            Not used by this control.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Controls.InputBox">
+            <summary>
+            InputBox control that allows text input.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._validNumbers">
+            <summary>
+            A list of valid number characters
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._theme">
+            <summary>
+            The theme of the control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._alignment">
+            <summary>
+            The alignment of the text.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._leftDrawOffset">
+            <summary>
+            When editing the text box, this allows the text to scroll to the right so you can see what you are typing.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._carrotPos">
+            <summary>
+            The location of the carrot.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._text">
+            <summary>
+            The text value of the input box.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._isNumeric">
+            <summary>
+            Indicates the input box is numeric only.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._allowDecimalPoint">
+            <summary>
+            Indicates that the input box (when numeric) will accept decimal points.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox._currentAppearance">
+            <summary>
+            The current appearance of the control.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.InputBox.TextChanged">
+            <summary>
+            Raised when the text has changed and the preview has accepted it.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.InputBox.TextChangedPreview">
+            <summary>
+            Raised before the text has changed and allows the change to be cancelled.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox.DisableMouse">
+            <summary>
+            Disables mouse input.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Controls.InputBox.DisableKeyboard">
+            <summary>
+            Disables the keyboard which turns off keyboard input and hides the cursor.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.TextAlignment">
+            <summary>
+            The alignment of the carrot.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.MaxLength">
+            <summary>
+            How big the text can be. Setting this to 0 will make it unlimited.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.CarrotPosition">
+            <summary>
+            Gets or sets the position of the carrot in the current text.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.Text">
+            <summary>
+            Gets or sets the text of the input box.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.IsNumeric">
+            <summary>
+            Gets or sets weather or not this input box only allows numeric input.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.InputBox.AllowDecimal">
+            <summary>
+            Gets or sets weather or not this input box should restrict numeric input should allow a decimal point.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.#ctor(System.Int32)">
+            <summary>
+            Creates a new instance of the input box.
+            </summary>
+            <param name="width">The width of the input box.</param>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.Compose">
+            <summary>
+            Draws the control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.DetermineAppearance">
+            <summary>
+            Determines the appearance of the control based on its current state.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.Validate">
+            <summary>
+            Validates that the value of the input box conforms to the settings of this control and sets the dirty flag to true.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.PositionCursor">
+            <summary>
+            Correctly positions the cursor within the text.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Called when the control should process keyboard information.
+            </summary>
+            <param name="info">The keyboard information.</param>
+            <returns>True if the keyboard was handled by this control.</returns>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.FocusLost">
+            <summary>
+            Called when the control loses focus.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.InputBox.Focused">
+            <summary>
+            Called when the control is focused.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ListBox`1.CompareByReference">
+            <summary>
+            When the <see cref="P:SadConsole.Controls.ListBox`1.SelectedItem"/> changes, and this property is true, objects will be compared by reference. If false, they will be compared by value.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ListBox`1.HideBorder">
+            <summary>
+            When set to true, does not render the border.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ListBox`1.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ListBox`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new instance of the listbox control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ListBoxItem.Theme">
+            <summary>
+            The theme of this control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ListBoxItem.KeepOwnTheme">
+            <summary>
+            When set to true, a listbox will not override the theme with its own.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Controls.RadioButton">
+            <summary>
+            Represents a button that can be toggled on/off within a group of other buttons.
+            </summary>
+        </member>
+        <member name="E:SadConsole.Controls.RadioButton.IsSelectedChanged">
+            <summary>
+            Raised when the selected state of the radio button is changed.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.RadioButton.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.RadioButton.Text">
+            <summary>
+            The text displayed on the control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.RadioButton.TextAlignment">
+            <summary>
+            The alignment of the text, left, center, or right.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.RadioButton.GroupName">
+            <summary>
+            The group of the radio button. All radio buttons with the same group name will work together to keep one radio button selected at a time.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.RadioButton.IsSelected">
+            <summary>
+            Gets or sets the selected state of the radio button.
+            </summary>
+            <remarks>Radio buttons within the same group will set their IsSelected property to the opposite of this radio button when you set this property.</remarks>
+        </member>
+        <member name="M:SadConsole.Controls.RadioButton.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new radio button control with the specified width and height.
+            </summary>
+            <param name="width">Width of the control.</param>
+            <param name="height">Height of the control.</param>
+        </member>
+        <member name="M:SadConsole.Controls.RadioButton.DetermineAppearance">
+            <summary>
+            Determines the appearance of the control based on its current state.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.RadioButton.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Called when the control should process keyboard information.
+            </summary>
+            <param name="info">The keyboard information.</param>
+            <returns>True if the keyboard was handled by this control.</returns>
+        </member>
+        <member name="T:SadConsole.Controls.ScrollBar">
+            <summary>
+            Represents a scrollbar control.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.Value">
+            <summary>
+            Gets or sets the value of the scrollbar between the minimum and maximum values.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.Maximum">
+            <summary>
+            Gets or sets the maximum value for the scrollbar.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.Step">
+            <summary>
+            Gets or sets the amount of values to add or substract to the <see cref="P:SadConsole.Controls.ScrollBar.Value"/> when the up or down arrows are used.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.Theme">
+            <summary>
+            The theme of this control. If the theme is not explicitly set, the theme is taken from the library.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.TopOrLeftCharacter">
+            <summary>
+            Gets or sets the character used on the top or left of the control depending on the orientation of the control when it was created.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.BottomOrRightCharacter">
+            <summary>
+            Gets or sets the character used on the bottom or right of the control depending on the orientation of the control when it was created.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.SliderCharacter">
+            <summary>
+            Gets or sets the character displayed for the slider.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.ScrollBar.SliderBarCharacter">
+            <summary>
+            Gets or sets the character displayed for the slider bar.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.ScrollBar.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Not Used.
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:SadConsole.Controls.SelectionButton">
+            <summary>
+            Provides a button-like control that changes focus to a designated previous or next selection button when the arrow keys are pushed.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.SelectionButton.PreviousSelection">
+            <summary>
+            The selection button to focus when the UP key is pressed or the SelectPrevious() method is called.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.SelectionButton.NextSelection">
+            <summary>
+            The selection button to focus when the UP key is pressed or the SelectNext() method is called.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Controls.SelectionButton.#ctor(System.Int32)">
+            <summary>
+            Creates a new Selection Button with a specific width and height.
+            </summary>
+            <param name="width">The width of the selection button.</param>
+        </member>
+        <member name="M:SadConsole.Controls.SelectionButton.SetNextSelection(SadConsole.Controls.SelectionButton@,System.Boolean)">
+            <summary>
+            Sets the next selection button and optionally sets the previous of the referenced selection to this button.
+            </summary>
+            <param name="nextSelection">The selection button to be used as next.</param>
+            <param name="setPreviousOnNext">Sets the PreviousSelection property on the <paramref name="nextSelection"/> instance to current selection button. Defaults to true.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SadConsole.Controls.SelectionButton.ProcessKeyboard(SadConsole.Input.KeyboardInfo)">
+            <summary>
+            Focuses the previous or next selection button depending on if the UP or DOWN arrow keys were pressed.
+            </summary>
+            <param name="info">The keyboard state.</param>
+        </member>
+        <member name="M:SadConsole.Controls.SelectionButton.SelectPrevious">
+            <summary>
+            Selects the previous selection button.
+            </summary>
+            <returns>Returns the previous selection button.</returns>
+        </member>
+        <member name="M:SadConsole.Controls.SelectionButton.SelectNext">
+            <summary>
+            Selects the next selection button.
+            </summary>
+            <returns>Returns the next selection button.</returns>
+        </member>
+        <member name="T:SadConsole.Controls.Serializer">
+            <summary>
+            Common serialization tasks for SadConsole.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Controls.Serializer.ControlTypes">
+            <summary>
+            The types commonly used when sesrializing a <see cref="T:SadConsole.Consoles.ControlsConsole"/> or a <see cref="T:SadConsole.Consoles.Window"/>
+            </summary>
+        </member>
+        <member name="T:SadConsole.Themes.CheckBoxTheme">
+            <summary>
+            The theme of a checkbox control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.CheckBoxTheme.Button">
+            <summary>
+            The theme part for the button icon.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.CheckBoxTheme.CheckedIcon">
+            <summary>
+            The icon displayed when the radio button is checked.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.CheckBoxTheme.UncheckedIcon">
+            <summary>
+            The icon displayed when the radio button is checked.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.CheckBoxTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ButtonTheme">
+            <summary>
+            The theme of the button control
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ButtonTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ControlsConsoleTheme">
+            <summary>
+            A theme for a Window object.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ControlsConsoleTheme.FillStyle">
+            <summary>
+            The style of of the console surface.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ControlsConsoleTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.InputBoxTheme">
+            <summary>
+            A theme for the input box control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.InputBoxTheme.CarrotEffect">
+            <summary>
+            The style to use for the carrot.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.InputBoxTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.Library">
+            <summary>
+            The library of themes. Holds the themes of all controls.
+            </summary>
+        </member>
+        <member name="P:SadConsole.Themes.Library.Default">
+            <summary>
+            If a control does not specify its own theme, the theme from this property will be used.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.ButtonTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.Button"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.SelectionButtonTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.SelectionButton"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.WindowTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Consoles.Window"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.ScrollBarTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.ScrollBar"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.RadioButtonTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.RadioButton"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.ListBoxTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.ListBox"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.CheckBoxTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.CheckBox"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.InputBoxTheme">
+            <summary>
+            Theme for the <see cref="T:SadConsole.Controls.InputBox"/> control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.Library.ControlsConsoleTheme">
+            <summary>
+            Theme for <see cref="T:SadConsole.Consoles.ControlsConsole"/>.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.Library.#ctor">
+            <summary>
+            Creates a new instance of the theme library with default themes.
+            </summary>
+        </member>
+        <member name="T:SadConsole.Themes.ListBoxTheme">
+            <summary>
+            The theme for a ListBox control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ListBoxTheme.Border">
+            <summary>
+            The appearance of the border.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ListBoxTheme.Item">
+            <summary>
+            The appearance of an item.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ListBoxTheme.ScrollBarTheme">
+            <summary>
+            The appearance of the scrollbar used by the listbox control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ListBoxTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.RadioButtonTheme">
+            <summary>
+            The theme of a radio button control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.RadioButtonTheme.Button">
+            <summary>
+            The theme part for the button icon.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.RadioButtonTheme.CheckedIcon">
+            <summary>
+            The icon displayed when the radio button is checked.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.RadioButtonTheme.UncheckedIcon">
+            <summary>
+            The icon displayed when the radio button is checked.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.RadioButtonTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ScrollBarTheme">
+            <summary>
+            The theme of the slider control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ScrollBarTheme.Ends">
+            <summary>
+            The theme part for the ends of the scroll bar.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ScrollBarTheme.Bar">
+            <summary>
+            The theme part for the scroll bar bar where the slider is not located.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ScrollBarTheme.Slider">
+            <summary>
+            The theme part for the scroll bar icon.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ScrollBarTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ThemePartBase">
+            <summary>
+            The base class for a theme part or a simple theme.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartBase.Normal">
+            <summary>
+            The normal appearance of the control.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartBase.Focused">
+            <summary>
+            The appearance of the control when it is focused.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartBase.MouseOver">
+            <summary>
+            The appearance of the control when the mouse is over it.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartBase.Disabled">
+            <summary>
+            The appearance of the control when it is disabled.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ThemePartBase.Clone">
+            <summary>
+            Clones this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ThemePartClickable">
+            <summary>
+            Defines the theme of a control that can be clicked.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartClickable.MouseClicking">
+            <summary>
+            The appearance of the control when the mouse button is held down over it.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ThemePartClickable.Clone">
+            <summary>
+            Clones the object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.ThemePartSelected">
+            <summary>
+            Defines the theme of a control who has a selection state.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.ThemePartSelected.Selected">
+            <summary>
+            The style of the selected part of the control.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.ThemePartSelected.Clone">
+            <summary>
+            Clones this object.
+            </summary>
+            <returns>The cloned theme.</returns>
+        </member>
+        <member name="T:SadConsole.Themes.WindowTheme">
+            <summary>
+            A theme for a Window object.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.WindowTheme.TitleStyle">
+            <summary>
+            The style of the title.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.WindowTheme.BorderStyle">
+            <summary>
+            The style of the border
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.WindowTheme.FillStyle">
+            <summary>
+            The style of window space inside the border.
+            </summary>
+        </member>
+        <member name="F:SadConsole.Themes.WindowTheme.ModalTint">
+            <summary>
+            The color to tint the background when the window is shown as modal.
+            </summary>
+        </member>
+        <member name="M:SadConsole.Themes.WindowTheme.Clone">
+            <summary>
+            Returns a clone of this object.
+            </summary>
+            <returns>The cloned object.</returns>
+        </member>
+    </members>
+</doc>
