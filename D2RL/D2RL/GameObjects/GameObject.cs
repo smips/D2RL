@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using D2RL.Maps;
 using Microsoft.Xna.Framework;
 using SadConsole.Consoles;
 
@@ -25,10 +25,6 @@ namespace D2RL.GameObjects
                 return _x;
             }
 
-            set
-            {
-                _x = value;
-            }
         }
         public int Y
         {
@@ -37,10 +33,6 @@ namespace D2RL.GameObjects
                 return _y;
             }
 
-            set
-            {
-                _y = value;
-            }
         }
         public int GlyphIndex
         {
@@ -81,8 +73,8 @@ namespace D2RL.GameObjects
 
         public GameObject(int x, int y, int glyph, Color foreground, Color background)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
             GlyphIndex = glyph;
             Foreground = foreground;
             Background = background;
@@ -108,5 +100,18 @@ namespace D2RL.GameObjects
             }
         }
 
+        public bool Move(int dx, int dy, IMap map)
+        {
+            if (!isActive) { return false; }
+            Point currentPosition = new Point(X, Y);
+            Point desiredPosition = new Point(X + dx, Y + dy);
+            if(map.CanMove(currentPosition, desiredPosition, MovementTypes.Walk))
+            {
+                _x = X + dx;
+                _y = Y + dy;
+                return true;
+            }
+            return false;
+        }
     }
 }

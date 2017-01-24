@@ -16,6 +16,9 @@ namespace D2RL.Maps.Tiles
         Color Foreground { get; set; }
         Color Background { get; set; }
         int GlyphIndex { get; set; }
+        bool BlockSight { get; set; }
+        bool BlockGroundMovement { get; set; }
+        bool BlockFlyingMovement { get; set; }
 
         void Draw(SurfaceEditor se, int xPosition, int yPosition);
     }

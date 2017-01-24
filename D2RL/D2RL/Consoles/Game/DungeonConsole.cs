@@ -60,22 +60,22 @@ namespace D2RL.Consoles.Game
             }
             else if (info.KeysPressed.Contains(AsciiKey.Get(Microsoft.Xna.Framework.Input.Keys.Left)))
             {
-                player.X--;
+                player.Move(-1, 0, map);
                 ReDraw();
             }
             else if (info.KeysPressed.Contains(AsciiKey.Get(Microsoft.Xna.Framework.Input.Keys.Right)))
             {
-                player.X++;
+                player.Move(1, 0, map);
                 ReDraw();
             }
             else if (info.KeysPressed.Contains(AsciiKey.Get(Microsoft.Xna.Framework.Input.Keys.Up)))
             {
-                player.Y--;
+                player.Move(0, -1, map);
                 ReDraw();
             }
             else if (info.KeysPressed.Contains(AsciiKey.Get(Microsoft.Xna.Framework.Input.Keys.Down)))
             {
-                player.Y++;
+                player.Move(0, 1, map);
                 ReDraw();
             }
             return base.ProcessKeyboard(info);

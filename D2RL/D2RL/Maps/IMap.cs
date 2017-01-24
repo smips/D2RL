@@ -9,6 +9,11 @@ using Microsoft.Xna.Framework;
 
 namespace D2RL.Maps
 {
+    public enum MovementTypes
+    {
+        Walk
+    }
+
     public interface IMap
     {
         int Width { get; set; }
@@ -16,5 +21,6 @@ namespace D2RL.Maps
         void Initialize();
         void Disable();
         void Draw(SurfaceEditor se, Point start, Point end, int xOffset, int yOffset);
+        bool CanMove(Point currentPosition, Point desiredPosition, MovementTypes MovementType);
     }
 }

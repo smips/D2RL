@@ -16,6 +16,10 @@ namespace D2RL.Maps.Tiles
         private Color _foreground;
         private Color _background;
         private int _glyphIndex;
+        private bool _blockSight;
+        private bool _blockGroundMovement;
+        private bool _blockFlyingMovement;
+
 
         public int X
         {
@@ -65,6 +69,45 @@ namespace D2RL.Maps.Tiles
             set
             {
                 _glyphIndex = value;
+            }
+        }
+
+        public bool BlockSight
+        {
+            get
+            {
+                return _blockSight;
+            }
+
+            set
+            {
+                _blockSight = value;
+            }
+        }
+
+        public bool BlockGroundMovement
+        {
+            get
+            {
+                return _blockGroundMovement;
+            }
+
+            set
+            {
+                _blockGroundMovement = value;
+            }
+        }
+
+        public bool BlockFlyingMovement
+        {
+            get
+            {
+                return _blockFlyingMovement;
+            }
+
+            set
+            {
+                _blockFlyingMovement = value;
             }
         }
 

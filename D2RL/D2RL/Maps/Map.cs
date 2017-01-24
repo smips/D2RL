@@ -9,7 +9,8 @@ using Microsoft.Xna.Framework;
 using SadConsole.Consoles;
 
 namespace D2RL.Maps
-{
+{   
+
     public class Map : IMap
     {
         private ITile[,] map;
@@ -76,6 +77,18 @@ namespace D2RL.Maps
             }
         }
 
-
+        public bool CanMove(Point currentPosition, Point desiredPosition, MovementTypes MovementType)
+        {
+            switch (MovementType)
+            {
+                case (MovementTypes.Walk):
+                    bool insideMap = (desiredPosition.X >= 0) && (desiredPosition.Y >= 0) && (desiredPosition.X < Width) && (desiredPosition.Y < Height);
+                    
+                    return insideMap;
+                    
+                default:
+                    return false;
+            }
+        }
     }
 }
