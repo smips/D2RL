@@ -11,7 +11,8 @@ namespace D2RL.Maps
 {
     public enum MovementTypes
     {
-        Walk
+        Walk,
+        WalkToward
     }
 
     public interface IMap

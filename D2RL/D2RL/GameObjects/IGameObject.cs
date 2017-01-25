@@ -23,5 +23,6 @@ namespace D2RL.GameObjects
         void Draw(SurfaceEditor se, int xPosition, int yPosition);
 
         bool Move(int dx, int dy, IMap map);
+        bool MoveToward(Point target, IMap map);
     }
 }

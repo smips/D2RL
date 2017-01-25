@@ -12,6 +12,8 @@ namespace D2RL.Consoles.Game
 {
     public class DungeonConsole:SadConsole.Consoles.Console, BaseConsole
     {
+        private System.Timers.Timer mouseMoveTimer = new System.Timers.Timer(40);
+        private bool canProcessMouseMove = true;
         private Maps.Map map = new Maps.Map(80,40);
         private GameObject player = new GameObject(5, 5, 2, new Color(200, 200, 200), new Color(0, 0, 0));
 
@@ -19,6 +21,13 @@ namespace D2RL.Consoles.Game
         {
             IsVisible = false;
             CanUseKeyboard = false;
+            UsePixelPositioning = false;
+            mouseMoveTimer.Elapsed += MouseMoveTimer_Elapsed;
+        }
+
+        private void MouseMoveTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            canProcessMouseMove = true;
         }
 
         public void Initialize()
@@ -32,6 +41,7 @@ namespace D2RL.Consoles.Game
             ReDraw();
             IsVisible = true;
             IsFocused = true;
+
         }
 
         public void Disable()
@@ -80,5 +90,18 @@ namespace D2RL.Consoles.Game
             }
             return base.ProcessKeyboard(info);
         }
+
+        public override bool ProcessMouse(MouseInfo info)
+        {
+            if (info.LeftButtonDown && canProcessMouseMove)
+            {
+                player.MoveToward(info.WorldLocation, map);
+                ReDraw();
+                canProcessMouseMove = false;
+                mouseMoveTimer.Start();              
+            }
+            return base.ProcessMouse(info);
+        }
+
     }
 }

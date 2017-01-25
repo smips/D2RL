@@ -9,7 +9,7 @@ using SadConsole.Consoles;
 
 namespace D2RL.GameObjects
 {
-    public class GameObject:IGameObject
+    public class GameObject : IGameObject
     {
         private int _x;
         private int _y;
@@ -100,12 +100,13 @@ namespace D2RL.GameObjects
             }
         }
 
-        public bool Move(int dx, int dy, IMap map)
+
+        public virtual bool Move(int dx, int dy, IMap map)
         {
             if (!isActive) { return false; }
             Point currentPosition = new Point(X, Y);
             Point desiredPosition = new Point(X + dx, Y + dy);
-            if(map.CanMove(currentPosition, desiredPosition, MovementTypes.Walk))
+            if (map.CanMove(currentPosition, desiredPosition, MovementTypes.Walk))
             {
                 _x = X + dx;
                 _y = Y + dy;
@@ -113,5 +114,20 @@ namespace D2RL.GameObjects
             }
             return false;
         }
+
+        public bool MoveToward(Point target, IMap map)
+        {
+            if (!isActive) { return false; }
+            List<Point> targetLine = Utilities.Geometry.GetLine(new Point(X, Y), target);
+            if(targetLine.Count <= 1) { return false; }
+            if (map.CanMove(new Point(X, Y), targetLine[1], MovementTypes.Walk))
+            {
+                _x = targetLine[1].X;
+                _y = targetLine[1].Y;
+                return true;
+            }
+            return false;
+        }
+
     }
 }

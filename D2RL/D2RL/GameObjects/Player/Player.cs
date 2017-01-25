@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using D2RL.Maps;
 using Microsoft.Xna.Framework;
 
 namespace D2RL.GameObjects.Player
@@ -13,5 +14,6 @@ namespace D2RL.GameObjects.Player
         {
 
         }
+
     }
 }
